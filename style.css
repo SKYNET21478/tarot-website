@@ -63,6 +63,22 @@ footer a {
   color: var(--accent);
 }
 
+/* 후기게시판 메뉴만 글자색을 다르게 해요. 어두운 화면에서는 흰색, 밝은 화면에서는 흰색이 안 보여서 본문 글자색을 써요. */
+header nav a.nav-reviews {
+  color: var(--text);
+  font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) header nav a.nav-reviews {
+    color: #ffffff;
+  }
+}
+
+:root[data-theme="dark"] header nav a.nav-reviews {
+  color: #ffffff;
+}
+
 h1 {
   font-size: 26px;
   margin: 12px 0 4px;
