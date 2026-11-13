@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>타로운세 사용자 후기</title>
+  <meta name="description" content="타로운세 - 운명의 수레바퀴 앱 사용자 후기 게시판">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">홈</a>
+      <a href="reviews.html">후기</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <a href="terms.html">이용약관</a>
+      <a href="support.html">고객지원</a>
+    </nav>
+    <h1>사용자 후기</h1>
+    <p class="muted">타로운세를 써 본 느낌을 남겨 주세요. 좋았던 점도, 불편했던 점도 모두 도움이 돼요.</p>
+  </header>
+
+  <main>
+    <!-- 공지사항: Firebase 콘솔의 notices 컬렉션에 글이 있을 때만 보여요. -->
+    <section id="notice-section" class="card notice-card" hidden>
+      <h2>공지사항</h2>
+      <ul id="notice-list" class="notice-list"></ul>
+    </section>
+
+    <section class="card">
+      <h2>후기 남기기</h2>
+      <form id="review-form" novalidate>
+        <div class="field">
+          <label for="review-name">닉네임</label>
+          <input id="review-name" name="name" type="text" maxlength="20" autocomplete="nickname" placeholder="예: 별빛" required>
+        </div>
+
+        <div class="field">
+          <label for="review-rating">별점</label>
+          <select id="review-rating" name="rating" required>
+            <option value="5">★★★★★ 5점</option>
+            <option value="4">★★★★☆ 4점</option>
+            <option value="3">★★★☆☆ 3점</option>
+            <option value="2">★★☆☆☆ 2점</option>
+            <option value="1">★☆☆☆☆ 1점</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="review-text">내용</label>
+          <textarea id="review-text" name="text" rows="5" minlength="5" maxlength="500" placeholder="5자 이상, 500자까지 쓸 수 있어요." required></textarea>
+          <p class="muted count"><span id="review-count">0</span> / 500</p>
+        </div>
+
+        <!-- 사람에게는 보이지 않는 칸이에요. 자동 등록 프로그램이 채우면 등록하지 않아요. -->
+        <div class="hp" aria-hidden="true">
+          <label for="review-website">이 칸은 비워 두세요</label>
+          <input id="review-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <p class="muted">이메일이나 전화번호 같은 개인정보는 쓰지 말아 주세요. 남긴 후기는 확인을 거친 뒤 이 페이지에 공개돼요.</p>
+        <button id="review-submit" type="submit">후기 등록</button>
+        <p id="review-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>등록된 후기</h2>
+      <p id="review-summary" class="muted"></p>
+      <ul id="review-list" class="review-list"></ul>
+      <p id="review-empty" class="muted">후기를 불러오는 중이에요.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 정용도. 타로운세 - 운명의 수레바퀴</p>
+  </footer>
+
+  <script type="module" src="reviews.js"></script>
+</body>
+</html>
