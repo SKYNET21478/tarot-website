@@ -35,6 +35,27 @@ const noticeSection = document.getElementById("notice-section");
 const noticeList = document.getElementById("notice-list");
 const MAX_NOTICES = 10;
 
+// 등록을 막는 표현들이에요. (욕설, 선정적인 말, 도박·대출 같은 광고, 링크)
+// 같은 목록이 Firebase 보안 규칙(firestore.rules)에도 들어 있어서, 이 화면을 거치지 않고 보내도 막혀요.
+// 목록을 고칠 때는 두 곳을 함께 고쳐요.
+const BLOCKED_WORDS = [
+  "시발", "씨발", "씨바", "씨팔", "ㅅㅂ", "ㅆㅂ", "병신", "ㅂㅅ", "지랄", "ㅈㄹ", "좆", "존나", "ㅈㄴ",
+  "개새", "새끼", "ㅅㄲ", "썅", "쌍년", "쌍놈", "미친놈", "미친년", "염병", "엿먹", "닥쳐", "꺼져",
+  "느금", "니애미", "창녀",
+  "섹스", "야동", "포르노", "자위", "성인용품", "성인사이트", "성인방송", "조건만남", "원나잇",
+  "카지노", "바카라", "토토", "도박", "대출",
+  "fuck", "shit", "bitch", "asshole", "porn", "sex", "casino"
+];
+const LINK_PATTERN = /https?:\/\/|www\./i;
+
+// 띄어쓰기나 기호를 사이에 끼워 넣어 피하는 것을 막으려고, 글자만 남겨서 비교해요.
+function hasBlockedWord(value) {
+  const raw = String(value).toLowerCase();
+  if (LINK_PATTERN.test(raw)) return true;
+  const compact = raw.replace(/[^0-9a-z가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
+  return BLOCKED_WORDS.some((word) => compact.includes(word));
+}
+
 const configured = Boolean(firebaseConfig.projectId && firebaseConfig.apiKey);
 const db = configured ? getFirestore(initializeApp(firebaseConfig)) : null;
 
@@ -223,6 +244,11 @@ form.addEventListener("submit", async (event) => {
     textInput.focus();
     return;
   }
+  if (hasBlockedWord(name) || hasBlockedWord(text)) {
+    setStatus("욕설, 선정적인 표현, 광고나 링크는 등록할 수 없어요. 내용을 고쳐서 다시 등록해 주세요.", true);
+    textInput.focus();
+    return;
+  }
   if (recentlyPosted()) {
     setStatus("방금 후기를 남기셨어요. 1분 뒤에 다시 등록해 주세요.", true);
     return;
@@ -244,7 +270,11 @@ form.addEventListener("submit", async (event) => {
     setStatus("후기가 접수됐어요. 확인 뒤 이 페이지에 공개돼요. 고맙습니다.");
   } catch (error) {
     console.error(error);
-    setStatus("후기를 등록하지 못했어요. 잠시 뒤에 다시 시도해 주세요.", true);
+    if (error && error.code === "permission-denied") {
+      setStatus("등록할 수 없는 표현이 들어 있어요. 내용을 고쳐서 다시 등록해 주세요.", true);
+    } else {
+      setStatus("후기를 등록하지 못했어요. 잠시 뒤에 다시 시도해 주세요.", true);
+    }
   } finally {
     submitButton.disabled = false;
   }

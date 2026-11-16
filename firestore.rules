@@ -14,6 +14,11 @@ service cloud.firestore {
         && request.auth.token.email_verified == true;
     }
 
+    // 등록을 막는 표현들이에요. reviews.js 의 BLOCKED_WORDS 와 같은 목록이에요. (고칠 때 함께 고쳐요)
+    function hasBlockedWord(value) {
+      return value.matches('(?is).*(시발|씨발|씨바|씨팔|ㅅㅂ|ㅆㅂ|병신|ㅂㅅ|지랄|ㅈㄹ|좆|존나|ㅈㄴ|개새|새끼|ㅅㄲ|썅|쌍년|쌍놈|미친놈|미친년|염병|엿먹|닥쳐|꺼져|느금|니애미|창녀|섹스|야동|포르노|자위|성인용품|성인사이트|성인방송|조건만남|원나잇|카지노|바카라|토토|도박|대출|fuck|shit|bitch|asshole|porn|sex|casino|https?://|www[.]).*');
+    }
+
     match /reviews/{reviewId} {
       // 승인된(approved == true) 후기는 누구나, 나머지는 관리자만 읽을 수 있어요.
       allow read: if resource.data.approved == true || isAdmin();
@@ -31,7 +36,9 @@ service cloud.firestore {
         && request.resource.data.text.size() >= 5
         && request.resource.data.text.size() <= 500
         && request.resource.data.approved == false
-        && request.resource.data.createdAt == request.time;
+        && request.resource.data.createdAt == request.time
+        && !hasBlockedWord(request.resource.data.name)
+        && !hasBlockedWord(request.resource.data.text);
 
       // 관리자는 승인 여부(approved)만 바꿀 수 있어요. 글 내용은 관리자도 못 고쳐요.
       allow update: if isAdmin()
