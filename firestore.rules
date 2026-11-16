@@ -1,13 +1,22 @@
 rules_version = '2';
 
 // 타로운세 후기 게시판 보안 규칙이에요.
-// Firebase 콘솔 → Firestore Database → 규칙 탭에 그대로 붙여 넣고 "게시"를 눌러요.
+// Firebase 콘솔 → Firestore Database → 규칙 탭에 게시된 내용과 같아요.
+// 단, 관리자 이메일은 이 파일에 적지 않았어요. (이 파일은 공개 저장소에 올라가요)
+// 콘솔에 붙여 넣을 때 ADMIN_EMAIL 자리에 실제 관리자 Google 계정 주소를 넣어요.
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // 관리자: Google 로그인으로 확인된 관리자 계정 한 개뿐이에요.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'ADMIN_EMAIL'
+        && request.auth.token.email_verified == true;
+    }
+
     match /reviews/{reviewId} {
-      // 승인된(approved == true) 후기만 누구나 읽을 수 있어요.
-      allow read: if resource.data.approved == true;
+      // 승인된(approved == true) 후기는 누구나, 나머지는 관리자만 읽을 수 있어요.
+      allow read: if resource.data.approved == true || isAdmin();
 
       // 누구나 후기를 쓸 수 있지만, 정해진 모양과 길이만 받고 항상 "미승인"으로 저장돼요.
       allow create: if request.resource.data.keys().hasOnly(['name', 'rating', 'text', 'approved', 'createdAt'])
@@ -24,8 +33,13 @@ service cloud.firestore {
         && request.resource.data.approved == false
         && request.resource.data.createdAt == request.time;
 
-      // 수정과 삭제는 웹에서는 아무도 못 해요. (승인·삭제는 Firebase 콘솔에서 직접 해요)
-      allow update, delete: if false;
+      // 관리자는 승인 여부(approved)만 바꿀 수 있어요. 글 내용은 관리자도 못 고쳐요.
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['approved'])
+        && request.resource.data.approved is bool;
+
+      // 삭제는 관리자만 할 수 있어요.
+      allow delete: if isAdmin();
     }
 
     match /notices/{noticeId} {

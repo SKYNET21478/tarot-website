@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>타로운세 후기 관리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">홈</a>
+      <a href="reviews.html" class="nav-reviews">후기게시판</a>
+    </nav>
+    <h1>후기 관리</h1>
+    <p class="muted">관리자 계정으로 로그인하면 후기를 승인하거나 지울 수 있어요.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>로그인</h2>
+      <p id="admin-user" class="muted">로그인 상태를 확인하는 중이에요.</p>
+      <button id="admin-login" type="button" hidden>Google 계정으로 로그인</button>
+      <button id="admin-logout" type="button" class="button-plain" hidden>로그아웃</button>
+      <p id="admin-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="pending-section" class="card" hidden>
+      <h2>승인 대기 <span id="pending-count" class="muted"></span></h2>
+      <ul id="pending-list" class="review-list"></ul>
+      <p id="pending-empty" class="muted" hidden>승인을 기다리는 후기가 없어요.</p>
+    </section>
+
+    <section id="approved-section" class="card" hidden>
+      <h2>공개 중 <span id="approved-count" class="muted"></span></h2>
+      <ul id="approved-list" class="review-list"></ul>
+      <p id="approved-empty" class="muted" hidden>공개된 후기가 없어요.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 SKYNET2. 타로운세 - 운명의 수레바퀴</p>
+  </footer>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

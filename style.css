@@ -170,6 +170,32 @@ button:disabled {
   cursor: default;
 }
 
+/* 후기 관리 페이지의 단추들 */
+.button-plain {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.button-danger {
+  background: transparent;
+  color: #c0392b;
+  border: 1px solid #c0392b;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.admin-actions button {
+  margin-top: 0;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
 .status {
   min-height: 1.7em;
   margin: 8px 0 0;
