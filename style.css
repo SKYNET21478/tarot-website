@@ -196,6 +196,28 @@ button:disabled {
   font-size: 14px;
 }
 
+.field label.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+}
+
+.notice-badge-off {
+  background: var(--muted);
+}
+
+.notice-admin-list {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+/* 관리 목록에서는 긴 공지를 몇 줄만 보여 줘요. */
+.notice-preview {
+  max-height: 6.8em;
+  overflow: hidden;
+}
+
 .status {
   min-height: 1.7em;
   margin: 8px 0 0;

@@ -37,6 +37,32 @@
       <ul id="approved-list" class="review-list"></ul>
       <p id="approved-empty" class="muted" hidden>공개된 후기가 없어요.</p>
     </section>
+
+    <section id="notice-admin-section" class="card" hidden>
+      <h2>공지사항 관리 <span id="notice-admin-count" class="muted"></span></h2>
+
+      <form id="notice-form" novalidate>
+        <p id="notice-form-mode" class="muted">새 공지를 써요.</p>
+        <div class="field">
+          <label for="notice-title">제목</label>
+          <input id="notice-title" type="text" maxlength="100" placeholder="예: 비공개 테스트 안내" required>
+        </div>
+        <div class="field">
+          <label for="notice-text">내용</label>
+          <textarea id="notice-text" rows="8" maxlength="5000" placeholder="줄을 바꿔 쓰면 그대로 보여요."></textarea>
+        </div>
+        <div class="field">
+          <label class="check"><input id="notice-visible" type="checkbox" checked> 후기게시판에 공개</label>
+        </div>
+        <div class="admin-actions">
+          <button id="notice-save" type="submit">공지 저장</button>
+          <button id="notice-cancel" type="button" class="button-plain" hidden>수정 취소</button>
+        </div>
+      </form>
+
+      <ul id="notice-admin-list" class="review-list notice-admin-list"></ul>
+      <p id="notice-admin-empty" class="muted" hidden>등록된 공지가 없어요.</p>
+    </section>
   </main>
 
   <footer>
