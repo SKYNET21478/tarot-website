@@ -14,6 +14,7 @@
       <a href="privacy.html">개인정보처리방침</a>
       <a href="terms.html">이용약관</a>
       <a href="support.html">고객지원</a>
+      <a href="notices.html" class="nav-reviews">공지사항</a>
       <a href="reviews.html" class="nav-reviews">후기게시판</a>
       <a href="admin.html">관리자</a>
     </nav>
@@ -22,11 +23,12 @@
   </header>
 
   <main>
-    <!-- 공지사항: Firebase 콘솔의 notices 컬렉션에 글이 있을 때만 보여요. -->
-    <section id="notice-section" class="card notice-card" hidden>
-      <h2>공지사항</h2>
-      <ul id="notice-list" class="notice-list"></ul>
-    </section>
+    <!-- 최근 공지 한 줄: 공지 전체는 공지사항 페이지(notices.html)에 있어요. 공개된 공지가 있을 때만 보여요. -->
+    <p id="notice-section" class="card notice-line" hidden>
+      <span class="notice-badge">공지</span>
+      <a id="notice-latest" href="notices.html"></a>
+      <a href="notices.html" class="muted notice-more">전체 보기</a>
+    </p>
 
     <section class="card">
       <h2>후기 남기기</h2>

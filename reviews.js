@@ -32,7 +32,7 @@ const listEl = document.getElementById("review-list");
 const emptyEl = document.getElementById("review-empty");
 const summaryEl = document.getElementById("review-summary");
 const noticeSection = document.getElementById("notice-section");
-const noticeList = document.getElementById("notice-list");
+const noticeLatest = document.getElementById("notice-latest");
 const MAX_NOTICES = 10;
 
 // 등록을 막는 표현들이에요. (욕설, 선정적인 말, 도박·대출 같은 광고, 링크)
@@ -140,37 +140,8 @@ async function loadReviews() {
   }
 }
 
-function renderNotice(notice) {
-  const item = document.createElement("li");
-  item.className = "notice";
-
-  const head = document.createElement("div");
-  head.className = "review-head";
-
-  const badge = document.createElement("span");
-  badge.className = "notice-badge";
-  badge.textContent = "공지";
-
-  const titleEl = document.createElement("strong");
-  titleEl.textContent = notice.title;
-
-  const dateEl = document.createElement("span");
-  dateEl.className = "muted";
-  dateEl.textContent = formatDate(notice.createdAt);
-
-  head.append(badge, titleEl, dateEl);
-  item.append(head);
-
-  if (typeof notice.text === "string" && notice.text) {
-    const body = document.createElement("p");
-    body.className = "review-text";
-    body.textContent = notice.text;
-    item.append(body);
-  }
-  return item;
-}
-
-// 공지는 Firebase 콘솔의 "notices" 컬렉션에서 visible=true 인 글만 가져와요. 최신 글이 위에 와요.
+// 후기게시판에는 가장 최근 공지의 제목 한 줄만 보여 주고, 누르면 공지사항 페이지로 가요.
+// 공지는 Firebase 의 "notices" 컬렉션에서 visible=true 인 글만 가져와요.
 async function loadNotices() {
   if (!db) return;
   try {
@@ -182,7 +153,10 @@ async function loadNotices() {
       .filter((n) => typeof n.title === "string" && n.title)
       .sort((a, b) => millis(b.createdAt) - millis(a.createdAt));
 
-    noticeList.replaceChildren(...notices.map(renderNotice));
+    if (notices.length) {
+      const date = formatDate(notices[0].createdAt);
+      noticeLatest.textContent = notices[0].title + (date ? "  (" + date + ")" : "");
+    }
     noticeSection.hidden = notices.length === 0;
   } catch (error) {
     // 공지를 못 불러와도 후기 기능은 그대로 쓸 수 있게 조용히 넘어가요.

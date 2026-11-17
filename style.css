@@ -295,3 +295,21 @@ footer {
   font-size: 13px;
   color: var(--muted);
 }
+
+/* 후기게시판 위의 최근 공지 한 줄 */
+.notice-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border-color: var(--accent);
+}
+
+.notice-line[hidden] {
+  display: none;
+}
+
+.notice-line .notice-more {
+  margin-left: auto;
+  font-size: 14px;
+}
