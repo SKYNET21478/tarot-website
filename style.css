@@ -313,3 +313,12 @@ footer {
   margin-left: auto;
   font-size: 14px;
 }
+
+/* 언어 전환(English / 한국어): 메뉴 맨 오른쪽의 작은 단추 */
+header nav a.lang-switch {
+  margin-left: auto;
+  padding: 0 10px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  text-decoration: none;
+}
