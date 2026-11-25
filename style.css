@@ -314,11 +314,38 @@ footer {
   font-size: 14px;
 }
 
-/* 언어 전환(English / 한국어): 메뉴 맨 오른쪽의 작은 단추 */
-header nav a.lang-switch {
+/* 언어 선택: 메뉴 맨 오른쪽의 국기 두 개. 지금 언어의 국기에 테두리, 다른 국기를 누르면 그 언어 페이지로 가요. */
+header nav .lang-flags {
   margin-left: auto;
-  padding: 0 10px;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header nav .flag {
+  display: block;
+  line-height: 0;
+  border-radius: 4px;
+}
+
+header nav .flag img {
+  width: 30px;
+  height: 20px;
+  display: block;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+}
+
+header nav .flag.current {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+header nav a.flag {
+  opacity: 0.7;
+}
+
+header nav a.flag:hover,
+header nav a.flag:focus-visible {
+  opacity: 1;
 }
